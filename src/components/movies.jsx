@@ -12,6 +12,8 @@ class Movies extends Component {
   };
   render() {
     const { length: count } = this.state.movies;
+    const { movies: allMovies, currentPageNumber, pageSize } = this.state;
+    const movies = paginate(allMovies, currentPageNumber, pageSize);
 
     if (!this.state.movies.length) {
       return <h1 className="m-4">There are no movies in the database.</h1>;
@@ -32,7 +34,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie) => {
+            {movies.map((movie) => {
               return (
                 <tr key={movie.title}>
                   <th>{movie.title}</th>
