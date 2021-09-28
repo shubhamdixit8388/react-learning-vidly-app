@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
   state = {
     movies: getMovies(),
+    pageSize: 4,
+    currentPageNumber: 1,
   };
   render() {
     const { length: count } = this.state.movies;
@@ -23,8 +27,8 @@ class Movies extends Component {
               <th scope="col">Genre</th>
               <th scope="col">Stock</th>
               <th scope="col">Rate</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
+              <th scope="col" />
+              <th scope="col" />
             </tr>
           </thead>
           <tbody>
@@ -55,9 +59,21 @@ class Movies extends Component {
             })}
           </tbody>
         </table>
+        <Pagination
+          itemsCount={count}
+          pageSize={this.state.pageSize}
+          onPageChange={this.handlePageChange}
+          currentPageNumber={this.state.currentPageNumber}
+        />
       </main>
     );
   }
+
+  handlePageChange = (currentPageNumber) => {
+    if (this.state.currentPageNumber !== currentPageNumber) {
+      this.setState({ currentPageNumber });
+    }
+  };
 
   handleLikeClick = (updateMovie) => {
     const movies = [...this.state.movies];
