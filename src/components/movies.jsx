@@ -5,6 +5,7 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import SidebarTabs from "./common/sidebar-tabs";
 import Table from "./common/table";
+import _ from "lodash";
 
 class Movies extends Component {
   state = {
@@ -13,11 +14,16 @@ class Movies extends Component {
     pageSize: 4,
     currentPageNumber: 1,
     selectedGenre: null,
+    sortColumn: { sortBy: "title", order: "asc" },
   };
 
   componentDidMount() {
     const genres = [{ name: "All Genres", _id: -999 }, ...getGenres()];
-    this.setState({ movies: getMovies(), genres, selectedGenre: genres[0] });
+    this.setState({
+      movies: getMovies(),
+      genres,
+      selectedGenre: genres[0],
+    });
   }
 
   render() {
@@ -27,16 +33,25 @@ class Movies extends Component {
       pageSize,
       genres,
       selectedGenre,
+      sortColumn,
     } = this.state;
 
-    const movieTableHeaderTitle = ["Title", "Stock", "Rate", "Genre", "", ""];
+    const movieTableHeaderTitles = [
+      { key: "title", value: "Title" },
+      { key: "numberInStock", value: "Stock" },
+      { key: "dailyRentalRate", value: "Rate" },
+      { key: "genre.name", value: "Genre" },
+      { key: "", value: "" },
+      { key: "", value: "" },
+    ];
     const movieTableKeys = ["title", "numberInStock", "dailyRentalRate"];
 
     const filteredMovies =
       selectedGenre && selectedGenre._id !== -999
         ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
         : allMovies;
-    const movies = paginate(filteredMovies, currentPageNumber, pageSize);
+    let movies = _.orderBy(filteredMovies, sortColumn.sortBy, sortColumn.order);
+    movies = paginate(movies, currentPageNumber, pageSize);
 
     if (!this.state.movies.length) {
       return <h1 className="m-4">There are no movies in the database.</h1>;
@@ -56,11 +71,13 @@ class Movies extends Component {
               Showing {filteredMovies.length} movies in the database.
             </h1>
             <Table
-              tableHeaderTitles={movieTableHeaderTitle}
+              tableHeaderTitles={movieTableHeaderTitles}
               tableKeys={movieTableKeys}
               items={movies}
               onLikeClick={this.handleLikeClick}
-              onDelete={this.deleteMovie}
+              onDelete={this.handleDeleteMovie}
+              onSort={this.handleSort}
+              sortColumn={sortColumn}
             />
             <Pagination
               itemsCount={filteredMovies.length}
@@ -95,17 +112,11 @@ class Movies extends Component {
     console.log(movies[updateMovieIndex]);
   };
 
-  getMovieCount() {
-    return (
-      this.state.movies.length && (
-        <h1 className="m-4">
-          Showing {this.state.movies.length} movies in the database.
-        </h1>
-      )
-    );
-  }
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
 
-  deleteMovie = (selectedMovie) => {
+  handleDeleteMovie = (selectedMovie) => {
     console.log(selectedMovie);
     this.setState({
       movies: this.state.movies.filter(
