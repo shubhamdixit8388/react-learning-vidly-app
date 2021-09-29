@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
+import { Route, Redirect, Switch } from "react-router";
 import { getMovies } from "./services/fakeMovieService";
 import Movies from "./components/movies";
-import SidebarTabs from "./components/common/sidebar-tabs";
+import NavBar from "./components/navbar";
+import Customers from "./components/customers";
+import Rentals from "./components/rentals";
+import NotFound from "./components/common/not-found";
 
 class App extends Component {
   state = {
@@ -11,16 +15,21 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <SidebarTabs />
-          </div>
-          <div className="col">
-            <Movies />
-          </div>
+      <React.Fragment>
+        <div>
+          <NavBar />
         </div>
-      </div>
+        <main className="container mt-3">
+          <Switch>
+            <Route path="/movies" component={Movies} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/not-found" component={NotFound} />
+            <Route path="/" exact component={Movies} />
+            <Redirect to="/not-found" />
+          </Switch>
+        </main>
+      </React.Fragment>
     );
   }
 }
