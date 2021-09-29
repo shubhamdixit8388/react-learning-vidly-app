@@ -14,9 +14,7 @@ const Pagination = (props) => {
           return (
             <li
               onClick={() => onItemSelect(page)}
-              className={
-                page === selectedItem ? "page-item active" : "page-item"
-              }
+              className={"page-item" + (page === selectedItem && " active")}
               key={page}
             >
               <span className="page-link">{page}</span>
