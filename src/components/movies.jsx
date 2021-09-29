@@ -7,6 +7,7 @@ import SidebarTabs from "./common/sidebar-tabs";
 import Table from "./common/table";
 import Like from "./common/like";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -19,7 +20,13 @@ class Movies extends Component {
   };
 
   movieColumns = [
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: (movie) => (
+        <Link to={"/movies/" + movie._id}>{movie.title}</Link>
+      ),
+    },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
     { path: "genre.name", label: "Genre" },

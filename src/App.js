@@ -7,20 +7,38 @@ import NavBar from "./components/navbar";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/common/not-found";
+import MovieDetails from "./components/movie-details";
 
 class App extends Component {
   state = {
-    movies: getMovies(),
+    navBarItems: [
+      { label: "Movies", link: "movies" },
+      { label: "Cutomers", link: "customers" },
+      { label: "Rentals", link: "rentals" },
+    ],
+    selectedNavBar: "",
   };
 
+  componentDidMount() {
+    this.setState({
+      selectedNavBar: this.state.navBarItems[0],
+    });
+  }
+
   render() {
+    const { navBarItems, selectedNavBar } = this.state;
     return (
       <React.Fragment>
         <div>
-          <NavBar />
+          <NavBar
+            navBarItems={navBarItems}
+            selectedNavBar={selectedNavBar}
+            onNavBarChange={this.handleNavBarSelect}
+          />
         </div>
         <main className="container mt-3">
           <Switch>
+            <Route path="/movies/:id" component={MovieDetails} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
@@ -32,6 +50,10 @@ class App extends Component {
       </React.Fragment>
     );
   }
+
+  handleNavBarSelect = (selectedNavBar) => {
+    this.setState({ selectedNavBar });
+  };
 }
 
 export default App;

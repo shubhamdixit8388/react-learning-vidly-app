@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (props) => {
+  const { navBarItems, selectedNavBar, onNavBarChange } = props;
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <Link className="navbar-brand" to="movies">
@@ -21,21 +22,19 @@ const NavBar = () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
-            <Link to="/movies" className="nav-link">
-              Movies <span className="sr-only">(current)</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/customers" className="nav-link">
-              Customers <span className="sr-only">(current)</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/rentals" className="nav-link">
-              Rentals <span className="sr-only">(current)</span>
-            </Link>
-          </li>
+          {navBarItems.map((navBarItem) => (
+            <li
+              className={
+                selectedNavBar === navBarItem ? "nav-item active" : "nav-item"
+              }
+              key={navBarItem.label}
+              onClick={() => onNavBarChange(navBarItem)}
+            >
+              <Link to={"/" + navBarItem.link} className="nav-link">
+                {navBarItem.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>
