@@ -5,6 +5,7 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import SidebarTabs from "./common/sidebar-tabs";
 import Table from "./common/table";
+import Like from "./common/like";
 import _ from "lodash";
 
 class Movies extends Component {
@@ -16,6 +17,34 @@ class Movies extends Component {
     selectedGenre: null,
     sortColumn: { sortBy: "title", order: "asc" },
   };
+
+  movieColumns = [
+    { path: "title", label: "Title" },
+    { path: "numberInStock", label: "Stock" },
+    { path: "dailyRentalRate", label: "Rate" },
+    { path: "genre.name", label: "Genre" },
+    {
+      path: "like",
+      content: (movie) => (
+        <Like
+          liked={movie.liked}
+          onLikeClick={() => this.handleLikeClick(movie)}
+          movie={movie}
+        />
+      ),
+    },
+    {
+      path: "delete",
+      content: (movie) => (
+        <button
+          className="btn btn-danger btn-sm"
+          onClick={() => this.handleDeleteMovie(movie)}
+        >
+          Delete
+        </button>
+      ),
+    },
+  ];
 
   componentDidMount() {
     const genres = [{ name: "All Genres", _id: -999 }, ...getGenres()];
@@ -35,16 +64,6 @@ class Movies extends Component {
       selectedGenre,
       sortColumn,
     } = this.state;
-
-    const movieTableHeaderTitles = [
-      { key: "title", value: "Title" },
-      { key: "numberInStock", value: "Stock" },
-      { key: "dailyRentalRate", value: "Rate" },
-      { key: "genre.name", value: "Genre" },
-      {},
-      {},
-    ];
-    const movieTableKeys = ["title", "numberInStock", "dailyRentalRate"];
 
     const filteredMovies =
       selectedGenre && selectedGenre._id !== -999
@@ -71,13 +90,10 @@ class Movies extends Component {
               Showing {filteredMovies.length} movies in the database.
             </h1>
             <Table
-              tableHeaderTitles={movieTableHeaderTitles}
-              tableKeys={movieTableKeys}
               items={movies}
-              onLikeClick={this.handleLikeClick}
-              onDelete={this.handleDeleteMovie}
               onSort={this.handleSort}
               sortColumn={sortColumn}
+              column={this.movieColumns}
             />
             <Pagination
               itemsCount={filteredMovies.length}

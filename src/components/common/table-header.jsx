@@ -15,13 +15,13 @@ class TableHeader extends React.Component {
     return (
       <thead>
         <tr>
-          {this.props.tableHeaderTitles.map((title, index) => (
+          {this.props.columns.map((column, index) => (
             <th
               key={index}
               scope="col"
-              onClick={() => this.raiseSort(title.key)}
+              onClick={() => this.raiseSort(column.path)}
             >
-              {title.value}
+              {column.label}
             </th>
           ))}
         </tr>
