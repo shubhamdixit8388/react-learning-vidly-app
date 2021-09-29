@@ -29,7 +29,8 @@ class Movies extends Component {
       selectedGenre,
     } = this.state;
 
-    const movieTableHeaderTitle = ["Title", "Genre", "Stock", "Rate", "", ""];
+    const movieTableHeaderTitle = ["Title", "Stock", "Rate", "Genre", "", ""];
+    const movieTableKeys = ["title", "numberInStock", "dailyRentalRate"];
 
     const filteredMovies =
       selectedGenre && selectedGenre._id !== -999
@@ -55,7 +56,8 @@ class Movies extends Component {
               Showing {filteredMovies.length} movies in the database.
             </h1>
             <Table
-              headerTitles={movieTableHeaderTitle}
+              tableHeaderTitles={movieTableHeaderTitle}
+              tableKeys={movieTableKeys}
               items={movies}
               onLikeClick={this.handleLikeClick}
               onDelete={this.deleteMovie}

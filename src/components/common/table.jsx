@@ -1,12 +1,12 @@
 import Like from "./like";
 
 const Table = (props) => {
-  const { items, onLikeClick, onDelete, headerTitles } = props;
+  const { items, onLikeClick, onDelete, tableHeaderTitles, tableKeys } = props;
   return (
     <table className="table">
       <thead>
         <tr>
-          {headerTitles.map((title, index) => (
+          {tableHeaderTitles.map((title, index) => (
             <th key={index} scope="col">
               {title}
             </th>
@@ -17,10 +17,10 @@ const Table = (props) => {
         {items.map((item) => {
           return (
             <tr key={item.title}>
-              <th>{item.title}</th>
+              {tableKeys.map((key) => (
+                <th key={key}>{item[key]}</th>
+              ))}
               <td>{item.genre.name}</td>
-              <td>{item.numberInStock}</td>
-              <td>{item.dailyRentalRate}</td>
               <td>
                 <Like
                   liked={item.liked}
