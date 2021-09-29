@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
-import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import SidebarTabs from "./common/sidebar-tabs";
+import Table from "./common/table";
 
 class Movies extends Component {
   state = {
@@ -12,12 +12,12 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPageNumber: 1,
-    selectedGenre: { name: "All Genres" },
+    selectedGenre: null,
   };
 
   componentDidMount() {
-    const genres = [{ name: "All Genres" }, ...getGenres()];
-    this.setState({ movies: getMovies(), genres });
+    const genres = [{ name: "All Genres", _id: -999 }, ...getGenres()];
+    this.setState({ movies: getMovies(), genres, selectedGenre: genres[0] });
   }
 
   render() {
@@ -29,8 +29,10 @@ class Movies extends Component {
       selectedGenre,
     } = this.state;
 
+    const movieTableHeaderTitle = ["Title", "Genre", "Stock", "Rate", "", ""];
+
     const filteredMovies =
-      selectedGenre && selectedGenre._id
+      selectedGenre && selectedGenre._id !== -999
         ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
         : allMovies;
     const movies = paginate(filteredMovies, currentPageNumber, pageSize);
@@ -52,45 +54,12 @@ class Movies extends Component {
             <h1 className="m-4">
               Showing {filteredMovies.length} movies in the database.
             </h1>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Title</th>
-                  <th scope="col">Genre</th>
-                  <th scope="col">Stock</th>
-                  <th scope="col">Rate</th>
-                  <th scope="col" />
-                  <th scope="col" />
-                </tr>
-              </thead>
-              <tbody>
-                {movies.map((movie) => {
-                  return (
-                    <tr key={movie.title}>
-                      <th>{movie.title}</th>
-                      <td>{movie.genre.name}</td>
-                      <td>{movie.numberInStock}</td>
-                      <td>{movie.dailyRentalRate}</td>
-                      <td>
-                        <Like
-                          liked={movie.liked}
-                          onLikeClick={this.handleLikeClick}
-                          movie={movie}
-                        />
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => this.deleteMovie(movie)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <Table
+              headerTitles={movieTableHeaderTitle}
+              items={movies}
+              onLikeClick={this.handleLikeClick}
+              onDelete={this.deleteMovie}
+            />
             <Pagination
               itemsCount={filteredMovies.length}
               pageSize={this.state.pageSize}
@@ -134,13 +103,14 @@ class Movies extends Component {
     );
   }
 
-  deleteMovie(selectedMovie) {
+  deleteMovie = (selectedMovie) => {
+    console.log(selectedMovie);
     this.setState({
       movies: this.state.movies.filter(
         (movie) => movie._id !== selectedMovie._id
       ),
     });
-  }
+  };
 }
 
 export default Movies;

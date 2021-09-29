@@ -5,12 +5,12 @@ const SidebarTabs = (props) => {
     <ul className="list-group">
       {genres.map((genre) => (
         <li
+          key={genre[valueProperty]}
           className={
             selectedItem.name === genre.name
               ? "list-group-item active"
               : "list-group-item"
           }
-          key={genre[valueProperty]}
           onClick={() => onItemSelect(genre)}
         >
           {genre[textProperty]}

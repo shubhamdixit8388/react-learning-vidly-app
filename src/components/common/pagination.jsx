@@ -19,7 +19,7 @@ const Pagination = (props) => {
               }
               key={page}
             >
-              <a className="page-link">{page}</a>
+              <span className="page-link">{page}</span>
             </li>
           );
         })}
@@ -31,8 +31,8 @@ const Pagination = (props) => {
 Pagination.propTypes = {
   itemsCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  currentPageNumber: PropTypes.number.isRequired,
+  onItemSelect: PropTypes.func.isRequired,
+  selectedItem: PropTypes.number.isRequired,
 };
 
 export default Pagination;
