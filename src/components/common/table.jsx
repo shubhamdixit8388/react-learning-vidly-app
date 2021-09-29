@@ -1,35 +1,25 @@
 import React from "react";
 import Like from "./like";
+import TableHeader from "./table-header";
 
 class Table extends React.Component {
-  raiseSort = (sortBy) => {
-    const sortColumn = { ...this.props.sortColumn };
-    if (sortColumn.sortBy === sortBy) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.sortBy = sortBy;
-      sortColumn.order = "asc";
-    }
-    this.props.onSort(sortColumn);
-  };
   render() {
-    const { items, onLikeClick, onDelete, tableHeaderTitles, tableKeys } =
-      this.props;
+    const {
+      items,
+      onLikeClick,
+      onDelete,
+      tableHeaderTitles,
+      tableKeys,
+      onSort,
+      sortColumn,
+    } = this.props;
     return (
       <table className="table">
-        <thead>
-          <tr>
-            {tableHeaderTitles.map((title, index) => (
-              <th
-                key={index}
-                scope="col"
-                onClick={() => this.raiseSort(title.key)}
-              >
-                {title.value}
-              </th>
-            ))}
-          </tr>
-        </thead>
+        <TableHeader
+          tableHeaderTitles={tableHeaderTitles}
+          onSort={onSort}
+          sortColumn={sortColumn}
+        />
         <tbody>
           {items.map((item) => {
             return (

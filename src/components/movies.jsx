@@ -41,8 +41,8 @@ class Movies extends Component {
       { key: "numberInStock", value: "Stock" },
       { key: "dailyRentalRate", value: "Rate" },
       { key: "genre.name", value: "Genre" },
-      { key: "", value: "" },
-      { key: "", value: "" },
+      {},
+      {},
     ];
     const movieTableKeys = ["title", "numberInStock", "dailyRentalRate"];
 
