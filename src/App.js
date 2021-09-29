@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Route, Redirect, Switch } from "react-router";
-import { getMovies } from "./services/fakeMovieService";
 import Movies from "./components/movies";
 import NavBar from "./components/navbar";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/common/not-found";
-import MovieDetails from "./components/movie-details";
+import MovieForm from "./components/movie-form";
 
 class App extends Component {
   state = {
@@ -38,7 +37,7 @@ class App extends Component {
         </div>
         <main className="container mt-3">
           <Switch>
-            <Route path="/movies/:id" component={MovieDetails} />
+            <Route path="/movies/:id" component={MovieForm} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />

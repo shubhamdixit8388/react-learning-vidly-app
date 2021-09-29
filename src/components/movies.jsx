@@ -24,7 +24,7 @@ class Movies extends Component {
       path: "title",
       label: "Title",
       content: (movie) => (
-        <Link to={"/movies/" + movie._id}>{movie.title}</Link>
+        <Link to={`/movies/ + ${movie._id}`}>{movie.title}</Link>
       ),
     },
     { path: "numberInStock", label: "Stock" },
