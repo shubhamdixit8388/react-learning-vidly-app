@@ -8,6 +8,7 @@ import Table from "./common/table";
 import Like from "./common/like";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import SearchBox from "./common/search-box";
 
 class Movies extends Component {
   state = {
@@ -17,6 +18,7 @@ class Movies extends Component {
     currentPageNumber: 1,
     selectedGenre: null,
     sortColumn: { sortBy: "title", order: "asc" },
+    searchString: "",
   };
 
   movieColumns = [
@@ -70,12 +72,19 @@ class Movies extends Component {
       genres,
       selectedGenre,
       sortColumn,
+      searchString,
     } = this.state;
 
-    const filteredMovies =
-      selectedGenre && selectedGenre._id !== -999
-        ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
-        : allMovies;
+    let filteredMovies = allMovies;
+    if (searchString) {
+      filteredMovies = allMovies.filter((movie) =>
+        movie.title.toLowerCase().startsWith(searchString.toLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id !== -999) {
+      filteredMovies = allMovies.filter(
+        (movie) => movie.genre._id === selectedGenre._id
+      );
+    }
     let movies = _.orderBy(filteredMovies, sortColumn.sortBy, sortColumn.order);
     movies = paginate(movies, currentPageNumber, pageSize);
 
@@ -99,6 +108,10 @@ class Movies extends Component {
             <h1 className="m-4">
               Showing {filteredMovies.length} movies in the database.
             </h1>
+            <SearchBox
+              value={searchString}
+              onChange={this.handleSearchBoxChange}
+            />
             <Table
               items={movies}
               onSort={this.handleSort}
@@ -119,7 +132,7 @@ class Movies extends Component {
 
   handleGenreChange = (selectedGenre) => {
     if (selectedGenre !== this.state.selectedGenre) {
-      this.setState({ selectedGenre, currentPageNumber: 1 });
+      this.setState({ selectedGenre, currentPageNumber: 1, searchString: "" });
     }
   };
 
@@ -142,8 +155,16 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  handleSearchBoxChange = (searchString) => {
+    console.log("searchString: ", searchString);
+    this.setState({
+      searchString,
+      selectedGenre: this.state.genres[0],
+      currentPageNumber: 1,
+    });
+  };
+
   handleDeleteMovie = (selectedMovie) => {
-    console.log(selectedMovie);
     this.setState({
       movies: this.state.movies.filter(
         (movie) => movie._id !== selectedMovie._id
