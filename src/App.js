@@ -8,6 +8,7 @@ import Rentals from "./components/rentals";
 import NotFound from "./components/common/not-found";
 import MovieForm from "./components/movie-form";
 import LoginForm from "./components/login-from";
+import RegisterForm from "./components/register-form";
 
 class App extends Component {
   state = {
@@ -16,6 +17,7 @@ class App extends Component {
       { label: "Cutomers", link: "customers" },
       { label: "Rentals", link: "rentals" },
       { label: "Login", link: "login" },
+      { label: "Register", link: "register" },
     ],
     selectedNavBar: "",
   };
@@ -44,6 +46,7 @@ class App extends Component {
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/login" component={LoginForm} />
+            <Route path="/register" component={RegisterForm} />
             <Route path="/not-found" component={NotFound} />
             <Route path="/" exact component={Movies} />
             <Redirect to="/not-found" />

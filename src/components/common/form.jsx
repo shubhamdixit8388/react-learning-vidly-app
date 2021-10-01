@@ -4,7 +4,7 @@ import Input from "./input";
 
 class Form extends React.Component {
   state = {
-    account: {},
+    data: {},
     errors: {},
   };
 
@@ -19,11 +19,7 @@ class Form extends React.Component {
   validate = () => {
     const errors = {};
     const errorOptions = { abortEarly: false };
-    const { error } = Joi.validate(
-      this.state.account,
-      this.schema,
-      errorOptions
-    );
+    const { error } = Joi.validate(this.state.data, this.schema, errorOptions);
     if (error) {
       error.details.map((item) => (errors[item.path[0]] = item.message));
     }
@@ -36,9 +32,9 @@ class Form extends React.Component {
     if (errorMessage) errors[input.name] = errorMessage;
     else delete errors[input.name];
 
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({ account, errors });
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+    this.setState({ data, errors });
   };
 
   validateProperty = ({ value, name }) => {
@@ -57,11 +53,11 @@ class Form extends React.Component {
   };
 
   renderInput(name, label, type = "text") {
-    const { account, errors } = this.state;
+    const { data, errors } = this.state;
     return (
       <Input
         name={name}
-        value={account[name]}
+        value={data[name]}
         label={label}
         type={type}
         onChange={this.handleChange}

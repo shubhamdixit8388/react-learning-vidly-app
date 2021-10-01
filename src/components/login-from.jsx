@@ -4,7 +4,7 @@ import Form from "./common/form";
 
 class LoginForm extends Form {
   state = {
-    account: {
+    data: {
       username: "",
       password: "",
     },
