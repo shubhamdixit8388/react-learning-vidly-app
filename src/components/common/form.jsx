@@ -46,7 +46,11 @@ class Form extends React.Component {
 
   renderSubmitButton = (label) => {
     return (
-      <button disabled={this.validate()} type="submit" class="btn btn-primary">
+      <button
+        disabled={this.validate()}
+        type="submit"
+        className="btn btn-primary"
+      >
         {label}
       </button>
     );

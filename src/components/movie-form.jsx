@@ -42,7 +42,6 @@ class MovieForm extends Form {
   };
 
   render() {
-    const { match, history } = this.props;
     return (
       <React.Fragment>
         <h1>Movie Form</h1>
