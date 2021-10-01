@@ -93,6 +93,9 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
+            <Link to="movies/new">
+              <button className="btn btn-primary btn-md">New Movie</button>
+            </Link>
             <h1 className="m-4">
               Showing {filteredMovies.length} movies in the database.
             </h1>
