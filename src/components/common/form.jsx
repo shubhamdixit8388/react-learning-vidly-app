@@ -24,6 +24,7 @@ class Form extends React.Component {
     if (error) {
       error.details.map((item) => (errors[item.path[0]] = item.message));
     }
+    console.log(errors);
     return Object.keys(errors).length ? errors : null;
   };
 
