@@ -13,6 +13,7 @@ import Logout from "./components/logout";
 import Auth from "./services/auth-service";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import ProtectedRoute from "./components/common/protected-route";
 
 class App extends Component {
   state = {
@@ -24,11 +25,11 @@ class App extends Component {
       { label: "Logout", link: "logout" },
     ],
     navBarItemsNotAuthenticated: [
+      { label: "Movies", link: "movies" },
       { label: "Login", link: "login" },
       { label: "Register", link: "register" },
     ],
     selectedNavBar: "",
-    user: {},
   };
 
   componentDidMount() {
@@ -62,15 +63,18 @@ class App extends Component {
         </div>
         <main className="container mt-3">
           <Switch>
-            <Route path="/movies/:id" component={MovieForm} />
-            <Route path="/movies" component={Movies} />
+            <ProtectedRoute path="/movies/:id" component={MovieForm} />
+            <Route
+              path="/movies"
+              render={(props) => <Movies {...props} user={user} />}
+            />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/not-found" component={NotFound} />
-            <Route path="/" exact component={Movies} />
+            <Redirect from="/" to="/movies" exact />
             <Redirect to="/not-found" />
           </Switch>
         </main>
