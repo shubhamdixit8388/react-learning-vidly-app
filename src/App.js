@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Route, Redirect, Switch } from "react-router";
+import { ToastContainer } from "react-toastify";
 import Movies from "./components/movies";
 import NavBar from "./components/navbar";
 import Customers from "./components/customers";
@@ -9,6 +10,7 @@ import NotFound from "./components/common/not-found";
 import MovieForm from "./components/movie-form";
 import LoginForm from "./components/login-from";
 import RegisterForm from "./components/register-form";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {
@@ -32,6 +34,7 @@ class App extends Component {
     const { navBarItems, selectedNavBar } = this.state;
     return (
       <React.Fragment>
+        <ToastContainer />
         <div>
           <NavBar
             navBarItems={navBarItems}
