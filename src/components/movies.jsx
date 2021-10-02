@@ -10,6 +10,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 import SearchBox from "./common/search-box";
 import { toast } from "react-toastify";
+import Auth from "../services/auth-service";
 
 class Movies extends Component {
   state = {
@@ -43,18 +44,25 @@ class Movies extends Component {
         />
       ),
     },
-    {
-      path: "delete",
-      content: (movie) => (
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => this.handleDeleteMovie(movie)}
-        >
-          Delete
-        </button>
-      ),
-    },
   ];
+
+  deleteColumn = {
+    path: "delete",
+    content: (movie) => (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => this.handleDeleteMovie(movie)}
+      >
+        Delete
+      </button>
+    ),
+  };
+
+  constructor() {
+    super();
+    const user = Auth.getCurrentUser();
+    if (user && user.isAdmin) this.movieColumns.push(this.deleteColumn);
+  }
 
   async componentDidMount() {
     const { data } = await getGenres();
@@ -69,7 +77,7 @@ class Movies extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const user = Auth.getCurrentUser();
     const {
       movies: allMovies,
       currentPageNumber,
