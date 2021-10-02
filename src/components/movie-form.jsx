@@ -1,8 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getGenres } from "../services/fakeGenreService";
-import { getMovie, saveMovie } from "./../services/fakeMovieService";
+import { getGenres } from "../services/genre-service";
+import { getMovie, saveMovie } from "../services/movie-service";
 
 class MovieForm extends Form {
   state = {
@@ -29,29 +29,34 @@ class MovieForm extends Form {
     dailyRentalRate: Joi.number().min(0).max(10).label("Rate").required(),
   };
 
-  componentDidMount() {
-    const genres = getGenres();
-    let data = { ...this.state.data };
+  async populateGenre() {
+    const { data: genres } = await getGenres();
+    const data = { ...this.state.data };
     data.genreId = genres && genres.length ? genres[0]._id : "";
-    const movieId = this.props.match.params.id;
-    if (movieId === "new") {
-      this.setState({ genres, data });
-      return;
+    this.setState({ genres, data });
+  }
+
+  async populateMovie() {
+    try {
+      const data = { ...this.state.data };
+      const movieId = this.props.match.params.id;
+      if (movieId === "new") return;
+      const { data: movie } = await getMovie(this.props.match.params.id);
+      console.log(movie);
+      data._id = movie._id;
+      data.title = movie.title;
+      data.numberInStock = movie.numberInStock;
+      data.dailyRentalRate = movie.dailyRentalRate;
+      data.genreId = movie.genre._id;
+      this.setState({ data });
+    } catch (error) {
+      this.props.history.replace("/not-found");
     }
+  }
 
-    const movie = getMovie(this.props.match.params.id);
-    if (!movie) return this.props.history.replace("/not-found");
-    console.log(movie);
-    data._id = movie._id;
-    data.title = movie.title;
-    data.numberInStock = movie.numberInStock;
-    data.dailyRentalRate = movie.dailyRentalRate;
-    data.genreId = movie.genre._id;
-
-    this.setState({
-      genres,
-      data,
-    });
+  async componentDidMount() {
+    await this.populateGenre();
+    await this.populateMovie();
   }
 
   doSubmit = () => {

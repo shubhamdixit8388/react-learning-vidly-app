@@ -1,6 +1,5 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-// import Logger from "./logger-service";
 
 axios.interceptors.response.use(null, (error) => {
   console.log("error....", error);
