@@ -18,7 +18,7 @@ class MovieForm extends Form {
 
   schema = {
     _id: Joi.string(),
-    title: Joi.string().label("Title").required(),
+    title: Joi.string().min(5).label("Title").required(),
     genreId: Joi.string().label("Genre").required(),
     numberInStock: Joi.number()
       .integer()
@@ -59,8 +59,8 @@ class MovieForm extends Form {
     await this.populateMovie();
   }
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
+  doSubmit = async () => {
+    await saveMovie(this.state.data);
     this.props.history.replace("/movies");
   };
 
