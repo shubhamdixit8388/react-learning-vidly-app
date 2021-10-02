@@ -64,10 +64,7 @@ class App extends Component {
         <main className="container mt-3">
           <Switch>
             <ProtectedRoute path="/movies/:id" component={MovieForm} />
-            <Route
-              path="/movies"
-              render={(props) => <Movies {...props} user={user} />}
-            />
+            <Route path="/movies" render={(props) => <Movies {...props} />} />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/login" component={LoginForm} />
