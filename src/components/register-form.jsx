@@ -1,6 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import * as UserService from "../services/user-service";
+import { toast } from "react-toastify";
 
 class RegisterForm extends Form {
   state = {
@@ -18,8 +20,15 @@ class RegisterForm extends Form {
     name: Joi.string().required().label("Name"),
   };
 
-  doSubmit = () => {
-    console.log("Submitted");
+  doSubmit = async () => {
+    try {
+      const response = await UserService.register(this.state.data);
+      localStorage.setItem("token", response.headers["x-auth-token"]);
+      this.props.history.push("/");
+      console.log(response);
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
 
   render() {
