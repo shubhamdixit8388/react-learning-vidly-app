@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = (props) => {
-  const { navBarItems, selectedNavBar, onNavBarChange } = props;
+const NavBar = ({ navBarItems, selectedNavBar, onNavBarChange, user }) => {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
       <Link className="navbar-brand" to="movies">
@@ -31,7 +30,9 @@ const NavBar = (props) => {
               onClick={() => onNavBarChange(navBarItem)}
             >
               <Link to={"/" + navBarItem.link} className="nav-link">
-                {navBarItem.label}
+                {navBarItem.label === "name"
+                  ? user[navBarItem.label]
+                  : navBarItem.label}
               </Link>
             </li>
           ))}
