@@ -24,7 +24,7 @@ class RegisterForm extends Form {
     try {
       const response = await UserService.register(this.state.data);
       localStorage.setItem("token", response.headers["x-auth-token"]);
-      this.props.history.push("/");
+      window.location = "/";
       console.log(response);
     } catch (e) {
       toast.error(e.message);
