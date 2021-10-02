@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovies, deleteMovie } from "../services/movie-service";
+import { getGenres } from "../services/genre-service";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import SidebarTabs from "./common/sidebar-tabs";
@@ -9,6 +9,7 @@ import Like from "./common/like";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import SearchBox from "./common/search-box";
+import { toast } from "react-toastify";
 
 class Movies extends Component {
   state = {
@@ -55,10 +56,13 @@ class Movies extends Component {
     },
   ];
 
-  componentDidMount() {
-    const genres = [{ name: "All Genres", _id: -999 }, ...getGenres()];
+  async componentDidMount() {
+    const { data } = await getGenres();
+    const genres = [{ name: "All Genres", _id: -999 }, ...data];
+
+    const { data: movies } = await getMovies();
     this.setState({
-      movies: getMovies(),
+      movies,
       genres,
       selectedGenre: genres[0],
     });
@@ -164,12 +168,21 @@ class Movies extends Component {
     });
   };
 
-  handleDeleteMovie = (selectedMovie) => {
-    this.setState({
-      movies: this.state.movies.filter(
-        (movie) => movie._id !== selectedMovie._id
-      ),
-    });
+  handleDeleteMovie = async (selectedMovie) => {
+    const originalMovie = this.state.movies;
+    const movies = originalMovie.filter(
+      (movie) => movie._id !== selectedMovie._id
+    );
+    this.setState({ movies });
+    try {
+      await deleteMovie(selectedMovie._id + "sds");
+    } catch (error) {
+      const expectedError = error.response && error.response.status === 404;
+      if (expectedError) {
+        toast.error("Movie doesnt exist with this");
+      }
+      this.setState({ movies: originalMovie });
+    }
   };
 }
 
