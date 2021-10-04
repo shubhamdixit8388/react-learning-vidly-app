@@ -15,7 +15,9 @@ class Child extends React.Component {
         <UserContext>
           {(userContext) => <div>Child - {userContext.name}</div>}
         </UserContext> */}
-        <div>Child - {this.context.name}</div>
+        <div>
+          Child -{this.context.currentUser ? this.context.currentUser.name : ""}
+        </div>
       </React.Fragment>
     );
   }
