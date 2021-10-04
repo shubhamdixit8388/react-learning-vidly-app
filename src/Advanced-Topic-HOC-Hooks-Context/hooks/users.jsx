@@ -6,8 +6,8 @@ function Users(props) {
 
   useEffect(() => {
     async function getUsers() {
-      const result = await axios("https://jsonplaceholder.typicode.com/posts");
-      setUsers(result.data);
+      //   const result = await axios("https://jsonplaceholder.typicode.com/posts");
+      //   setUsers(result.data);
     }
 
     getUsers();
