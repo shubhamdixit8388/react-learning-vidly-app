@@ -1,10 +1,12 @@
 import React from "react";
-import Movie from "./HOC/movie";
+import Counter from "./hooks/counter";
+import Users from "./hooks/users";
 
 const AdvncedTopics = () => {
   return (
     <div>
-      <Movie id="123" />
+      {/* <Counter id="123" /> */}
+      <Users />
     </div>
   );
 };
