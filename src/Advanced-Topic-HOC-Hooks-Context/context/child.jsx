@@ -3,7 +3,7 @@ import UserContext from "./user-context";
 
 class Child extends React.Component {
   /*Thid Way to get context data: data available in this.context */
-  static context = UserContext;
+  // static contextType = UserContext;
   componentDidMount() {
     console.log("Context: ", this.context);
   }
@@ -11,16 +11,17 @@ class Child extends React.Component {
   render() {
     return (
       <React.Fragment>
+        {/* First Way to get context data: function as a child (Lamda expression)
         <UserContext>
-          {/*First Way to get context data: function as a child (Lamda expression)*/}
           {(userContext) => <div>Child - {userContext.name}</div>}
-        </UserContext>
+        </UserContext> */}
+        <div>Child - {this.context.name}</div>
       </React.Fragment>
     );
   }
 }
 
 /*Second Way to get context data: data available in Child.context */
-Child.context = UserContext;
+Child.contextType = UserContext;
 
 export default Child;
