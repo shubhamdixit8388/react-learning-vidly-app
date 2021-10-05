@@ -8,6 +8,8 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 
+console.log(process.env.REACT_APP_NAME);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
