@@ -163,7 +163,6 @@ class Movies extends Component {
     movies[updateMovieIndex] = { ...movies[updateMovieIndex] };
     movies[updateMovieIndex].liked = !movies[updateMovieIndex].liked;
     this.setState({ movies });
-    console.log(movies[updateMovieIndex]);
   };
 
   handleSort = (sortColumn) => {
@@ -171,7 +170,6 @@ class Movies extends Component {
   };
 
   handleSearchBoxChange = (searchString) => {
-    console.log("searchString: ", searchString);
     this.setState({
       searchString,
       selectedGenre: this.state.genres[0],

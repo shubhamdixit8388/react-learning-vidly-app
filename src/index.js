@@ -13,8 +13,8 @@ console.log(process.env.REACT_APP_NAME);
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <App /> */}
-      {<AdvncedTopics />}
+      <App />
+      {/* {<AdvncedTopics />} */}
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
